@@ -109,12 +109,13 @@ const Header: React.FC = () => {
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[100]">
-          <div className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm dark:bg-gray-900/80" 
-               onClick={() => setIsMobileMenuOpen(false)} 
-               aria-hidden="true" 
+        <div className="fixed inset-0 z-[9999]">
+          <div 
+            className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm dark:bg-gray-900/80" 
+            onClick={() => setIsMobileMenuOpen(false)} 
+            aria-hidden="true" 
           />
-          <div className="fixed inset-y-0 right-0 z-[101] w-full overflow-y-auto bg-white px-6 py-6 dark:bg-gray-900 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="fixed inset-y-0 right-0 z-[10000] w-full overflow-y-auto bg-white px-6 py-6 dark:bg-gray-900 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <Link 
                 to="/" 
@@ -124,14 +125,29 @@ const Header: React.FC = () => {
                 <span className="sr-only">Numerology Portal</span>
                 <HomeIcon className="h-8 w-8 text-gray-700 dark:text-gray-300" />
               </Link>
-              <button
-                type="button"
-                className="-m-2.5 rounded-lg p-2.5 text-gray-700 dark:text-gray-400"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
+              <div className="flex items-center gap-x-4">
+                <button
+                  onClick={() => {
+                    toggleTheme();
+                  }}
+                  className="rounded-lg p-2 text-gray-700 ring-1 ring-gray-900/10 dark:text-gray-400 dark:ring-gray-800"
+                  aria-label="Toggle theme"
+                >
+                  {isDarkMode ? (
+                    <SunIcon className="h-5 w-5" />
+                  ) : (
+                    <MoonIcon className="h-5 w-5" />
+                  )}
+                </button>
+                <button
+                  type="button"
+                  className="-m-2.5 rounded-lg p-2.5 text-gray-700 dark:text-gray-400"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span className="sr-only">Close menu</span>
+                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
             </div>
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
@@ -152,20 +168,25 @@ const Header: React.FC = () => {
                   ))}
                 </div>
                 <div className="py-6">
-                  <button
-                    onClick={() => {
-                      toggleTheme();
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="rounded-lg p-2 text-gray-700 ring-1 ring-gray-900/10 dark:text-gray-400 dark:ring-gray-800"
-                    aria-label="Toggle theme"
-                  >
-                    {isDarkMode ? (
-                      <SunIcon className="h-5 w-5" />
-                    ) : (
-                      <MoonIcon className="h-5 w-5" />
-                    )}
-                  </button>
+                  {isAuthenticated ? (
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="w-full rounded-lg bg-gray-900 px-3 py-2 text-sm font-semibold text-white shadow-sm dark:bg-white dark:text-gray-900"
+                    >
+                      Logout
+                    </button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      className="block w-full rounded-lg bg-gray-900 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm dark:bg-white dark:text-gray-900"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Login
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

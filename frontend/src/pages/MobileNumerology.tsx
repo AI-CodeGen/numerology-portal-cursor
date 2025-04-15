@@ -11,7 +11,10 @@ const MobileNumerology: React.FC = () => {
 
   useEffect(() => {
     if (user?.dateOfBirth) {
-      setDateOfBirth(user.dateOfBirth);
+      // Convert DD/MM/YYYY to YYYY-MM-DD for the date input
+      const [day, month, year] = user.dateOfBirth.split('/');
+      const formattedDate = `${year}-${month}-${day}`;
+      setDateOfBirth(formattedDate);
     }
   }, [user]);
 

@@ -5,6 +5,13 @@ import { getDatabase } from '../config/database';
 import bcrypt from 'bcryptjs';
 import { CustomJwtPayload } from '../types/auth';
 
+// Extend Express Request type to include user
+declare module 'express' {
+  interface Request {
+    user?: CustomJwtPayload;
+  }
+}
+
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const register = async (req: Request, res: Response) => {
@@ -51,9 +58,22 @@ export const register = async (req: Request, res: Response) => {
     // Get the created user
     const user = await db.get('SELECT id, mobile_number, date_of_birth, age, place_of_birth, created_at FROM users WHERE id = ?', [result.lastID]);
 
+    // Generate token
+    const token = jwt.sign(
+      { userId: user.id, mobileNumber: user.mobile_number },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '1h' }
+    );
+
     res.status(201).json({ 
       message: 'User registered successfully',
-      user
+      token,
+      user: {
+        id: user.id,
+        mobileNumber: user.mobile_number,
+        dateOfBirth: user.date_of_birth,
+        placeOfBirth: user.place_of_birth
+      }
     });
   } catch (error) {
     console.error('Registration error:', error);
@@ -85,12 +105,14 @@ export const login = async (req: Request, res: Response) => {
       { expiresIn: '1h' }
     );
 
-    // Remove password from response
-    const { password: _, ...userWithoutPassword } = user;
-
     res.status(200).json({ 
       token,
-      user: userWithoutPassword
+      user: {
+        id: user.id,
+        mobileNumber: user.mobile_number,
+        dateOfBirth: user.date_of_birth,
+        placeOfBirth: user.place_of_birth
+      }
     });
   } catch (error) {
     console.error('Login error:', error);

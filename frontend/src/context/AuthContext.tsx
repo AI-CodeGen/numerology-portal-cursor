@@ -5,6 +5,7 @@ type User = {
   mobileNumber?: string;
   googleId?: string;
   dateOfBirth?: string;
+  placeOfBirth?: string;
 };
 
 type AuthContextType = {
@@ -27,6 +28,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('user', JSON.stringify(user));
     } else {
       localStorage.removeItem('user');
+      localStorage.removeItem('token');
     }
   }, [user]);
 

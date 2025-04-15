@@ -66,8 +66,16 @@ const Login: React.FC = () => {
 
     try {
       const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
+      
+      // Convert YYYY-MM-DD to DD/MM/YYYY for registration
+      let formattedDate = '';
+      if (isRegistering && dateOfBirth) {
+        const [year, month, day] = dateOfBirth.split('-');
+        formattedDate = `${day}/${month}/${year}`;
+      }
+
       const requestBody = isRegistering
-        ? { mobileNumber, password, dateOfBirth }
+        ? { mobileNumber, password, dateOfBirth: formattedDate }
         : { mobileNumber, password };
 
       const response = await fetch(`http://localhost:5000${endpoint}`, {
@@ -79,11 +87,25 @@ const Login: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error(isRegistering ? 'Registration failed' : 'Login failed');
+        const errorData = await response.json();
+        throw new Error(errorData.message || (isRegistering ? 'Registration failed' : 'Login failed'));
       }
 
       const data = await response.json();
-      login({ id: data.userId, mobileNumber });
+      
+      // Convert DD/MM/YYYY back to YYYY-MM-DD for the frontend
+      let formattedDateOfBirth = '';
+      if (data.user.dateOfBirth) {
+        const [day, month, year] = data.user.dateOfBirth.split('/');
+        formattedDateOfBirth = `${year}-${month}-${day}`;
+      }
+
+      login({ 
+        id: data.user.id, 
+        mobileNumber: data.user.mobileNumber,
+        dateOfBirth: formattedDateOfBirth,
+        placeOfBirth: data.user.placeOfBirth
+      });
       localStorage.setItem('token', data.token);
       navigate('/');
     } catch (err) {
