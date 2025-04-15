@@ -17,12 +17,7 @@ const NameNumerology: React.FC = () => {
     }
 
     if (!name.trim()) {
-      setError('Please enter a name');
-      return;
-    }
-
-    if (name.length > 50) {
-      setError('Name should not exceed 50 characters');
+      setError('Please enter a valid name');
       return;
     }
 
@@ -48,56 +43,73 @@ const NameNumerology: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
-          Name Numerology
-        </h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Enter your name (max 50 characters)
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              placeholder="Enter your name"
-              maxLength={50}
-            />
+    <div className="mx-auto max-w-2xl text-center">
+      <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+        Name Numerology
+      </h2>
+      <p className="mt-2 text-lg leading-8 text-gray-600 dark:text-gray-300">
+        Discover the hidden meaning behind your name and how it influences your life path.
+      </p>
+      
+      <div className="mt-10">
+        <form onSubmit={handleSubmit} className="mx-auto max-w-xl">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label htmlFor="name" className="block text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                Enter your full name
+              </label>
+              <div className="mt-2.5">
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-600 dark:bg-gray-800 dark:text-white dark:ring-gray-700 dark:placeholder:text-gray-500 sm:text-sm sm:leading-6"
+                  placeholder="Enter your name"
+                />
+              </div>
+            </div>
           </div>
 
           {error && (
-            <div className="text-red-500 text-sm">{error}</div>
+            <div className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</div>
           )}
 
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Calculate
-          </button>
+          <div className="mt-8">
+            <button
+              type="submit"
+              className="block w-full rounded-md bg-rose-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+            >
+              Calculate Numerology
+            </button>
+          </div>
         </form>
 
         {result && (
-          <div className="mt-6 p-4 bg-blue-50 dark:bg-gray-700 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
+          <div className="mt-16 rounded-3xl bg-white/5 p-8 ring-1 ring-gray-900/10 dark:ring-white/10">
+            <h3 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
               Your Numerology Result
             </h3>
-            <div className="space-y-2">
-              <p className="text-gray-600 dark:text-gray-300">
-                <span className="font-medium">Name:</span> {result.name}
-              </p>
-              <p className="text-gray-600 dark:text-gray-300">
-                <span className="font-medium">Destiny Number:</span> {result.destinyNumber}
-              </p>
-              <p className="text-gray-600 dark:text-gray-300">
-                <span className="font-medium">Interpretation:</span> {result.interpretation}
-              </p>
-            </div>
+            <dl className="mt-6 space-y-4">
+              <div className="flex flex-col gap-y-3">
+                <dt className="text-sm leading-6 text-gray-600 dark:text-gray-300">Name</dt>
+                <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  {result.name}
+                </dd>
+              </div>
+              <div className="flex flex-col gap-y-3">
+                <dt className="text-sm leading-6 text-gray-600 dark:text-gray-300">Life Path Number</dt>
+                <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  {result.lifePathNumber}
+                </dd>
+              </div>
+              <div className="flex flex-col gap-y-3">
+                <dt className="text-sm leading-6 text-gray-600 dark:text-gray-300">Interpretation</dt>
+                <dd className="text-base leading-7 text-gray-600 dark:text-gray-300">
+                  {result.interpretation}
+                </dd>
+              </div>
+            </dl>
           </div>
         )}
       </div>
