@@ -1,72 +1,62 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
-const Header = () => {
-  const location = useLocation();
+const Header: React.FC = () => {
+  const { isDarkMode, toggleTheme } = useTheme();
   const { isAuthenticated, logout } = useAuth();
-  const { isDarkMode, toggleDarkMode } = useTheme();
+  const location = useLocation();
+
+  const navItems = [
+    { path: '/', label: 'Mobile Numerology' },
+    { path: '/name', label: 'Name Numerology' },
+    { path: '/vehicle', label: 'Vehicle Numerology' },
+  ];
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow">
+    <header className="bg-white dark:bg-gray-800 shadow-md">
       <nav className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <div className="flex space-x-8">
-            <Link to="/" className="text-xl font-bold text-gray-800 dark:text-white">
-              Numerology Portal
-            </Link>
-            <div className="hidden md:flex space-x-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-8">
+            {navItems.map((item) => (
               <Link
-                to="/"
-                className={`${
-                  location.pathname === '/'
+                key={item.path}
+                to={item.path}
+                className={`text-lg font-medium ${
+                  location.pathname === item.path
                     ? 'text-rose-600 dark:text-rose-400'
-                    : 'text-gray-600 dark:text-gray-300'
-                } hover:text-rose-500`}
+                    : 'text-gray-600 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400'
+                }`}
               >
-                Mobile Number
+                {item.label}
               </Link>
-              <Link
-                to="/name"
-                className={`${
-                  location.pathname === '/name'
-                    ? 'text-blue-600 dark:text-blue-400'
-                    : 'text-gray-600 dark:text-gray-300'
-                } hover:text-blue-500`}
-              >
-                Name
-              </Link>
-              <Link
-                to="/vehicle"
-                className={`${
-                  location.pathname === '/vehicle'
-                    ? 'text-green-600 dark:text-green-400'
-                    : 'text-gray-600 dark:text-gray-300'
-                } hover:text-green-500`}
-              >
-                Vehicle Number
-              </Link>
-            </div>
+            ))}
           </div>
           <div className="flex items-center space-x-4">
             <button
-              onClick={toggleDarkMode}
+              onClick={toggleTheme}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+              aria-label="Toggle theme"
             >
-              {isDarkMode ? '🌞' : '🌙'}
+              {isDarkMode ? (
+                <SunIcon className="h-6 w-6 text-yellow-400" />
+              ) : (
+                <MoonIcon className="h-6 w-6 text-gray-600" />
+              )}
             </button>
             {isAuthenticated ? (
               <button
                 onClick={logout}
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+                className="px-4 py-2 text-sm font-medium text-white bg-rose-600 rounded-md hover:bg-rose-700"
               >
                 Logout
               </button>
             ) : (
               <Link
                 to="/login"
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+                className="px-4 py-2 text-sm font-medium text-white bg-rose-600 rounded-md hover:bg-rose-700"
               >
                 Login
               </Link>
