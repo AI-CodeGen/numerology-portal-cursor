@@ -8,10 +8,13 @@ const Login: React.FC = () => {
   const { login } = useAuth();
   const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [placeOfBirth, setPlaceOfBirth] = useState('');
   const [error, setError] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [mobileNumberError, setMobileNumberError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [dateOfBirthError, setDateOfBirthError] = useState('');
 
   const handleMobileNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 10);
@@ -33,6 +36,15 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleDateOfBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDateOfBirth(e.target.value);
+    if (!e.target.value) {
+      setDateOfBirthError('Date of birth is required');
+    } else {
+      setDateOfBirthError('');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -47,14 +59,23 @@ const Login: React.FC = () => {
       return;
     }
 
+    if (isRegistering && !dateOfBirth) {
+      setDateOfBirthError('Date of birth is required');
+      return;
+    }
+
     try {
       const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
+      const requestBody = isRegistering
+        ? { mobileNumber, password, dateOfBirth }
+        : { mobileNumber, password };
+
       const response = await fetch(`http://localhost:5000${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ mobileNumber, password }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
@@ -122,14 +143,14 @@ const Login: React.FC = () => {
           />
         </div>
 
-        <div className="max-w-md w-full space-y-8 p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-lg">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+        <div className="w-[440px] h-[504px] flex flex-col p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-lg">
+          <div className="mb-4">
+            <h2 className="text-center text-3xl font-extrabold text-gray-900 dark:text-white">
               {isRegistering ? 'Create your account' : 'Sign in to your account'}
             </h2>
           </div>
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            <div className="rounded-md shadow-sm space-y-4">
+          <form className="flex-1 flex flex-col overflow-hidden" onSubmit={handleSubmit}>
+            <div className="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
               <div>
                 <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Mobile Number
@@ -152,6 +173,30 @@ const Login: React.FC = () => {
                   <p className="mt-1 text-sm text-red-500">{mobileNumberError}</p>
                 )}
               </div>
+
+              {isRegistering && (
+                <div>
+                  <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Date of Birth
+                  </label>
+                  <input
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    type="date"
+                    required
+                    className={`appearance-none rounded-md relative block w-full px-3 py-2 border ${
+                      dateOfBirthError ? 'border-red-500' : 'border-gray-300'
+                    } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-rose-500 focus:border-rose-500 focus:z-10 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white`}
+                    value={dateOfBirth}
+                    onChange={handleDateOfBirthChange}
+                    max={new Date().toISOString().split('T')[0]}
+                  />
+                  {dateOfBirthError && (
+                    <p className="mt-1 text-sm text-red-500">{dateOfBirthError}</p>
+                  )}
+                </div>
+              )}
+
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Password
@@ -176,32 +221,32 @@ const Login: React.FC = () => {
             </div>
 
             {error && (
-              <div className="text-red-500 text-sm text-center">{error}</div>
+              <div className="text-red-500 text-sm text-center mt-2">{error}</div>
             )}
 
-            <div>
+            <div className="space-y-2 mt-2">
               <button
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
               >
                 {isRegistering ? 'Register' : 'Sign in'}
               </button>
-            </div>
 
-            <div className="text-center">
-              <button
-                type="button"
-                className="text-sm text-rose-600 hover:text-rose-500 dark:text-rose-400 dark:hover:text-rose-300"
-                onClick={() => setIsRegistering(!isRegistering)}
-              >
-                {isRegistering
-                  ? 'Already have an account? Sign in'
-                  : "Don't have an account? Register"}
-              </button>
+              <div className="text-center">
+                <button
+                  type="button"
+                  className="text-sm text-rose-600 hover:text-rose-500 dark:text-rose-400 dark:hover:text-rose-300"
+                  onClick={() => setIsRegistering(!isRegistering)}
+                >
+                  {isRegistering
+                    ? 'Already have an account? Sign in'
+                    : "Don't have an account? Register"}
+                </button>
+              </div>
             </div>
           </form>
 
-          <div className="mt-6">
+          <div className="mt-2">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300 dark:border-gray-600" />
@@ -213,7 +258,7 @@ const Login: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-6 flex justify-center">
+            <div className="mt-2 flex justify-center">
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
                 onError={() => setError('Google authentication failed')}

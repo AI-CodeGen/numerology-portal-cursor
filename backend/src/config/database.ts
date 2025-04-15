@@ -15,6 +15,9 @@ export async function initializeDatabase() {
       mobile_number TEXT UNIQUE,
       password TEXT,
       google_id TEXT UNIQUE,
+      date_of_birth TEXT,
+      age INTEGER,
+      place_of_birth TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 

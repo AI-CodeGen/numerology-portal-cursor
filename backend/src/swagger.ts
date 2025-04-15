@@ -38,6 +38,18 @@ const options = {
               type: 'string',
               description: 'Google OAuth ID',
             },
+            date_of_birth: {
+              type: 'string',
+              description: 'User date of birth in dd/mm/yyyy format',
+            },
+            age: {
+              type: 'integer',
+              description: 'User age calculated from date of birth',
+            },
+            place_of_birth: {
+              type: 'string',
+              description: 'User place of birth',
+            },
           },
         },
         NumerologyResponse: {
