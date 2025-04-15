@@ -1,8 +1,0 @@
-Create a full stack application with frontend in react and backend in nodejs express with following requirement -
-1) This application is a numerology application with 3 main services i.e. Mobile number numerology, Name number numerology, Vehicle number numerology.
-2) UI should have a landing page with a graded light wine color theme, and should by default land in the mobile number numerology page, which should accept a 10 digit mobile number and on submitting the same should call the backend which will generate a report for the number received from UI and will give back to UI where the report is displayed in a beautiful way.
-3) UI should have a header section with links to navigate to other 2 services from the currently selected service.
-4) UI for Name number numerology should have graded light blue color theme, and should should accept a name with maximum 50 characters and on submitting the same should call the backend which will generate a report for the number received from UI and will give back to UI where the report is displayed in a beautiful way.
-5) UI for Vehicle number numerology should have graded light green color theme, and should should accept a vehicle number with maximum 12 alphanumeric value and on submitting the same should call the backend which will generate a report for the number received from UI and will give back to UI where the report is displayed in a beautiful way.
-
-Also, generate the swagger documentation for the backend.
