@@ -65,13 +65,15 @@ const App: React.FC = () => {
               />
 
               <Header />
-              <main className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-                <Routes>
-                  <Route path="/" element={<MobileNumerology />} />
-                  <Route path="/name" element={<NameNumerology />} />
-                  <Route path="/vehicle" element={<VehicleNumerology />} />
-                  <Route path="/login" element={<Login />} />
-                </Routes>
+              <main className="relative mx-auto max-w-7xl min-h-[calc(100vh-80px)] flex items-center justify-center px-4 sm:px-6 lg:px-8">
+                <div className="w-full">
+                  <Routes>
+                    <Route path="/" element={<MobileNumerology />} />
+                    <Route path="/name" element={<NameNumerology />} />
+                    <Route path="/vehicle" element={<VehicleNumerology />} />
+                    <Route path="/login" element={<Login />} />
+                  </Routes>
+                </div>
               </main>
             </div>
           </div>

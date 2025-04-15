@@ -51,7 +51,7 @@ const VehicleNumerology: React.FC = () => {
         Discover the hidden meaning behind your vehicle number and how it influences your journey.
       </p>
       
-      <div className="mt-10">
+      <div className="mt-8">
         <form onSubmit={handleSubmit} className="mx-auto max-w-xl">
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="sm:col-span-2">
