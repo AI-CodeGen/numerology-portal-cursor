@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
-import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import { SunIcon, MoonIcon, HomeIcon } from '@heroicons/react/24/outline';
 
 const Header: React.FC = () => {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -20,6 +20,13 @@ const Header: React.FC = () => {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-8">
+            <Link
+              to="/"
+              className="text-lg font-medium text-gray-600 dark:text-gray-300 hover:text-rose-600 dark:hover:text-rose-400"
+              title="Home"
+            >
+              <HomeIcon className="h-6 w-6" />
+            </Link>
             {navItems.map((item) => (
               <Link
                 key={item.path}
