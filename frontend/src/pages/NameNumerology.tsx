@@ -78,7 +78,7 @@ const NameNumerology: React.FC = () => {
           <div className="mt-8">
             <button
               type="submit"
-              className="block w-full rounded-md bg-rose-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+              className="block w-full rounded-md bg-gradient-to-r from-[#f87eb3] via-[#b490ff] to-[#8bb5ff] px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f87eb3] transition-all duration-200"
             >
               Calculate Numerology
             </button>
