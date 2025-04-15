@@ -89,6 +89,21 @@ const Header: React.FC = () => {
               <MoonIcon className="h-5 w-5 transition-colors duration-200 group-hover:text-gray-900 dark:group-hover:text-white" />
             )}
           </button>
+          {isAuthenticated ? (
+            <button
+              onClick={logout}
+              className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </nav>
 
