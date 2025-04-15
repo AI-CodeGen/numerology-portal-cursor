@@ -71,7 +71,7 @@ export class NumerologyService {
   }
 
   private getMobileInterpretation(number: number): string {
-    const interpretations = {
+    const interpretations: { [key: number]: string } = {
       1: "Leadership and independence. This number brings strong individuality and self-confidence.",
       2: "Cooperation and balance. This number enhances relationships and diplomacy.",
       3: "Creativity and self-expression. This number brings joy and artistic abilities.",
@@ -86,7 +86,7 @@ export class NumerologyService {
   }
 
   private getNameInterpretation(number: number): string {
-    const interpretations = {
+    const interpretations: { [key: number]: string } = {
       1: "Natural leader with strong willpower and determination.",
       2: "Peacemaker with excellent diplomatic skills.",
       3: "Creative and expressive with artistic talents.",
@@ -101,7 +101,7 @@ export class NumerologyService {
   }
 
   private getVehicleInterpretation(number: number): string {
-    const interpretations = {
+    const interpretations: { [key: number]: string } = {
       1: "Vehicle brings independence and leadership qualities.",
       2: "Vehicle promotes harmony and balance in travel.",
       3: "Vehicle enhances creativity and self-expression.",
