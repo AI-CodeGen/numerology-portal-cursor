@@ -38,15 +38,15 @@ const Header: React.FC = () => {
             </svg>
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12">
+        <div className="hidden lg:flex lg:gap-x-8">
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`text-sm font-semibold leading-6 transition duration-200 ${
+              className={`text-base font-medium leading-6 px-4 py-2 rounded-lg transition-all duration-200 ${
                 location.pathname === item.path
-                  ? 'text-gray-900 dark:text-white'
-                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                  ? 'bg-gray-900 text-white shadow-sm dark:bg-white dark:text-gray-900'
+                  : 'text-gray-600 hover:bg-gray-900/50 hover:text-white dark:text-gray-400 dark:hover:bg-white/50 dark:hover:text-white'
               }`}
             >
               {item.label}
