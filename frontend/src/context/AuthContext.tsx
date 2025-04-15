@@ -4,6 +4,7 @@ type User = {
   id: string;
   mobileNumber?: string;
   googleId?: string;
+  dateOfBirth?: string;
 };
 
 type AuthContextType = {

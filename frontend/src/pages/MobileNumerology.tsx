@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 const MobileNumerology: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [mobileNumber, setMobileNumber] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState(user?.dateOfBirth || '');
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (user?.dateOfBirth) {
+      setDateOfBirth(user.dateOfBirth);
+    }
+  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +29,11 @@ const MobileNumerology: React.FC = () => {
       return;
     }
 
+    if (!dateOfBirth) {
+      setError('Please enter your date of birth');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/api/numerology/mobile', {
         method: 'POST',
@@ -28,7 +41,7 @@ const MobileNumerology: React.FC = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ mobileNumber }),
+        body: JSON.stringify({ mobileNumber, dateOfBirth }),
       });
 
       if (!response.ok) {
@@ -58,15 +71,36 @@ const MobileNumerology: React.FC = () => {
               <label htmlFor="mobileNumber" className="block text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                 Enter your 10-digit mobile number
               </label>
-              <div className="mt-2.5">
+              <div className="mt-2.5 relative">
                 <input
                   type="text"
                   id="mobileNumber"
                   value={mobileNumber}
-                  onChange={(e) => setMobileNumber(e.target.value)}
+                  onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-600 dark:bg-gray-800 dark:text-white dark:ring-gray-700 dark:placeholder:text-gray-500 sm:text-sm sm:leading-6"
-                  placeholder="Enter mobile number"
+                  placeholder="Enter 10-digit mobile number"
                   maxLength={10}
+                />
+                {mobileNumber.length === 10 && (
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <CheckCircleIcon className="h-5 w-5 text-green-500" aria-hidden="true" />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label htmlFor="dateOfBirth" className="block text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                Date of Birth
+              </label>
+              <div className="mt-2.5">
+                <input
+                  type="date"
+                  id="dateOfBirth"
+                  value={dateOfBirth}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-600 dark:bg-gray-800 dark:text-white dark:ring-gray-700 dark:placeholder:text-gray-500 sm:text-sm sm:leading-6"
+                  max={new Date().toISOString().split('T')[0]}
                 />
               </div>
             </div>
